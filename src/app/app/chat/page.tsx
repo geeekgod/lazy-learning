@@ -130,7 +130,7 @@ export default function Page() {
 
               if (message.user === "user") {
                 return (
-                  <Card key={index} className="p-4 space-y-4 dark:bg-gray-900">
+                  <Card key={index} className="p-4 space-y-4 dark:bg-gray-950">
                     <CardHeader>
                       <div className="flex items-center gap-3">
                         <Avatar className="h-9 w-9">
@@ -148,7 +148,7 @@ export default function Page() {
               }
               else {
                 return (
-                  <Card key={index} className="p-4 space-y-4 bg-gray-50 dark:bg-gray-900">
+                  <Card key={index} className="p-4 space-y-4 bg-gray-50 dark:bg-gray-950">
                     <CardHeader>
                       <div className="flex items-center gap-3">
                         <Avatar className="h-9 w-9">
