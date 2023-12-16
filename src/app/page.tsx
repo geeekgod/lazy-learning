@@ -7,7 +7,7 @@
 
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button"
-import { BrainIcon, GroupIcon, ReplyIcon } from "lucide-react";
+import { GroupIcon, ReplyIcon } from "lucide-react";
 import Link from "next/link"
 import { useRouter } from "next/navigation";
 

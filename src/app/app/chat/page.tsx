@@ -8,7 +8,6 @@ import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { CardHeader, CardContent, Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import Link from "next/link"
 import { Loader2 } from "lucide-react"
 import { useEffect, useState, useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
