@@ -118,7 +118,7 @@ export default function Page() {
       style={{
         height: "calc(100vh - 57px)"
       }}
-      className="w-full flex flex-col items-center bg-gray-100">
+      className="w-full flex flex-col items-center bg-gray-100 dark:bg-gray-900">
       <Toaster
         position="bottom-left"
         reverseOrder={false}
@@ -130,7 +130,7 @@ export default function Page() {
 
               if (message.user === "user") {
                 return (
-                  <Card key={index} className="p-4 space-y-4">
+                  <Card key={index} className="p-4 space-y-4 dark:bg-gray-900">
                     <CardHeader>
                       <div className="flex items-center gap-3">
                         <Avatar className="h-9 w-9">
@@ -141,14 +141,14 @@ export default function Page() {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-600">{message.text}</p>
+                      <p className="text-gray-600 dark:text-gray-200">{message.text}</p>
                     </CardContent>
                   </Card>
                 )
               }
               else {
                 return (
-                  <Card key={index} className="p-4 space-y-4 bg-gray-50">
+                  <Card key={index} className="p-4 space-y-4 bg-gray-50 dark:bg-gray-900">
                     <CardHeader>
                       <div className="flex items-center gap-3">
                         <Avatar className="h-9 w-9">
@@ -172,7 +172,7 @@ export default function Page() {
 
         </main>
       </div>
-      <div className="w-full p-6 bg-white shadow-md">
+      <div className="w-full p-6 shadow-md bg-white dark:bg-gray-950">
         <form onSubmit={handleSubmit}>
           <div className="flex gap-4">
             <Input disabled={loading} className="flex-grow" placeholder="Type your doubt here..." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
