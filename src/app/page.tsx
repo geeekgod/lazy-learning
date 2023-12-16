@@ -27,9 +27,14 @@ export default function Component() {
                   A revolutionary AI-powered platform to help you solve doubts instantly, make learning easy, and
                   achieve academic success.
                 </p>
-                <Link href="/app/chat">
-                  <Button className="mt-4">Ask a Question</Button>
-                </Link>
+                <div className="flex gap-2">
+                  <Link href="/app">
+                    <Button className="mt-4">Get Started</Button>
+                  </Link>
+                  <Link href="/app/chat">
+                    <Button className="mt-4" variant="outline">Ask a Question</Button>
+                  </Link>
+                </div>
               </div>
               <img
                 alt="Lazy Learning"

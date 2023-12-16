@@ -89,7 +89,7 @@ export function UserAuthForm({ className, formType, ...props }: UserAuthFormProp
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             )}
             {
-              formType === "login" ? "Sign In with Email" : "Sign Up with Email"
+              formType === "login" ? "Continue with your Email" : "Sign Up with Email"
             }
           </button>
         </div>
