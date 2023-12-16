@@ -2,14 +2,20 @@
  * Lazy Learning by GeeekGod.
  * @visit: https://geeekgod.in
  */
+
+'use client';
+
 import { Button } from "@/components/ui/button"
+import { BrainIcon, GroupIcon, ReplyIcon } from "lucide-react";
 import Link from "next/link"
+import { useRouter } from "next/navigation";
 
 export default function Component() {
+  const router = useRouter();
   return (
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center">
-        <Link className="flex items-center justify-center" href="#">
+        <Link className="flex items-center justify-center" href="/">
           <BrainIcon className="h-6 w-6" />
           <span className="sr-only">Lazy Learning</span>
         </Link>
@@ -37,7 +43,9 @@ export default function Component() {
                   A revolutionary AI-powered platform to help you solve doubts instantly, make learning easy, and
                   achieve academic success.
                 </p>
-                <Button className="mt-4">Ask a Question</Button>
+                <Button className="mt-4" onClick={() => {
+                  router.push('/app/chat');
+                }}>Ask a Question</Button>
               </div>
               <img
                 alt="Lazy Learning"
@@ -117,69 +125,3 @@ function BookOpenCheckIcon(props: React.SVGProps<SVGSVGElement>) {
   )
 }
 
-
-function BrainIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z" />
-      <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z" />
-    </svg>
-  )
-}
-
-
-function GroupIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M3 7V5c0-1.1.9-2 2-2h2" />
-      <path d="M17 3h2c1.1 0 2 .9 2 2v2" />
-      <path d="M21 17v2c0 1.1-.9 2-2 2h-2" />
-      <path d="M7 21H5c-1.1 0-2-.9-2-2v-2" />
-      <rect width="7" height="5" x="7" y="7" rx="1" />
-      <rect width="7" height="5" x="10" y="12" rx="1" />
-    </svg>
-  )
-}
-
-
-function ReplyIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="9 17 4 12 9 7" />
-      <path d="M20 18v-2a4 4 0 0 0-4-4H4" />
-    </svg>
-  )
-}
