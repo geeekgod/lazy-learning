@@ -10,7 +10,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { BrainIcon } from "lucide-react"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { RenderMessage } from "@/components/ai-markdown";
 
 type Message = {
   user: "user" | "bot";
@@ -23,56 +25,88 @@ export default function Page() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [prompt, setPrompt] = useState('');
 
+  // Chat Submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (prompt.trim() === '') {
+      toast.error("Please enter your doubt!");
+      return;
+    };
 
     const message: Message = {
       user: "user",
       text: prompt,
       timestamp: Date.now()
     }
+    let newMessages = [...messages, message];
 
-    setMessages([...messages, message]);
+    setMessages(newMessages);
 
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ content: prompt })
-    });
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ content: prompt })
+      });
 
-    // stream response
-    const reader = response.body?.getReader();
+      // stream response
+      const reader = response.body?.getReader();
+      toast.success("Message submitted!");
 
-    if (!reader) return;
+      if (!reader) return;
 
-    // read response
-    let done = false;
-    let value = '';
-    while (!done) {
-      const { done: _done, value: _value } = await reader.read();
-      done = _done;
-      value += new TextDecoder().decode(_value);
+      // read response
+      let done = false;
+      let value = '';
+      while (!done) {
+        const { done: _done, value: _value } = await reader.read();
+        done = _done;
+        value += new TextDecoder().decode(_value);
+      }
+
+      const botMessage: Message = {
+        user: "bot",
+        text: value,
+        timestamp: Date.now()
+      }
+      newMessages = [...newMessages, botMessage];
+      setMessages(newMessages);
+
+      setPrompt('');
+    }
+    catch (error) {
+      toast.error("Something went wrong!");
+      console.error(error);
+      setPrompt('');
+      setMessages(messages.slice(0, -1));
     }
 
-    console.log("Value", value);
-
-    const botMessage: Message = {
-      user: "bot",
-      text: value,
-      timestamp: Date.now()
-    }
-
-    setMessages([...messages, botMessage]);
-
-    setPrompt('');
   }
 
-  console.log(messages);
+  // Chat Fetch from Local Storage
+  useEffect(() => {
+    const messages = localStorage.getItem('messages');
+    if (messages) {
+      setMessages(JSON.parse(messages));
+    }
+  }, []);
+
+  // Chat Save to Local Storage
+  useEffect(() => {
+    if (messages.length === 0) return;
+
+    localStorage.setItem('messages', JSON.stringify(messages));
+  }, [messages]);
+
 
   return (
     <div className="w-full h-screen flex flex-col items-center bg-gray-100">
+      <Toaster
+        position="bottom-left"
+        reverseOrder={false}
+      />
       <header className="w-full py-4 px-6 bg-white shadow-md flex items-center justify-between">
         {/* <h1 className="font-bold text-2xl">Lazy Learning</h1> */}
         <Link className="flex items-center justify-center" href="/">
@@ -82,7 +116,7 @@ export default function Page() {
         <Button variant="outline">Logout</Button>
       </header>
       <div className="flex flex-grow overflow-auto p-6">
-        <main className="flex flex-col gap-6 w-full max-w-xl m-auto">
+        <main className="flex flex-col gap-6 w-full m-auto">
 
           {
             messages && messages.map((message, index) => {
@@ -118,7 +152,8 @@ export default function Page() {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-600">{message.text}</p>
+                      {/* <p className="text-gray-600">{message.text}</p> */}
+                      <RenderMessage>{message.text}</RenderMessage>
                     </CardContent>
                   </Card>
                 )
