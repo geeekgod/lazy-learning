@@ -9,8 +9,8 @@ import { CardHeader, CardContent, Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-import { BrainIcon } from "lucide-react"
-import { useEffect, useState } from "react";
+import { BrainIcon, Loader2 } from "lucide-react"
+import { useEffect, useState, useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { RenderMessage } from "@/components/ai-markdown";
 
@@ -24,9 +24,13 @@ export default function Page() {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [prompt, setPrompt] = useState('');
+  const [loading, setLoading] = useState(false);
+  const mainSectionRef = useRef<HTMLDivElement>(null);
 
   // Chat Submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    if (loading) return;
+    setLoading(true);
     e.preventDefault();
     if (prompt.trim() === '') {
       toast.error("Please enter your doubt!");
@@ -75,12 +79,14 @@ export default function Page() {
       setMessages(newMessages);
 
       setPrompt('');
+      setLoading(false);
     }
     catch (error) {
       toast.error("Something went wrong!");
       console.error(error);
       setPrompt('');
       setMessages(messages.slice(0, -1));
+      setLoading(false);
     }
 
   }
@@ -100,6 +106,12 @@ export default function Page() {
     localStorage.setItem('messages', JSON.stringify(messages));
   }, [messages]);
 
+  // Auto scroll to bottom of main section when messages change
+  useEffect(() => {
+    if (mainSectionRef.current) {
+      mainSectionRef.current.scrollTop = mainSectionRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <div className="w-full h-screen flex flex-col items-center bg-gray-100">
@@ -115,7 +127,7 @@ export default function Page() {
         </Link>
         <Button variant="outline">Logout</Button>
       </header>
-      <div className="flex flex-grow overflow-auto p-6">
+      <div className="flex flex-grow overflow-auto p-6" ref={mainSectionRef}>
         <main className="flex flex-col gap-6 w-full m-auto">
 
           {
@@ -168,12 +180,14 @@ export default function Page() {
       <div className="w-full p-6 bg-white shadow-md">
         <form onSubmit={handleSubmit}>
           <div className="flex gap-4">
-            <Input className="flex-grow" placeholder="Type your doubt here..." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
-            <Button variant="outline" type="submit">Send</Button>
+            <Input disabled={loading} className="flex-grow" placeholder="Type your doubt here..." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+            <Button disabled={loading} variant="outline" type="submit">
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Send
+            </Button>
           </div>
         </form>
       </div>
     </div>
   )
 }
-
