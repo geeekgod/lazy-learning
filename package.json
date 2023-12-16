@@ -26,6 +26,8 @@
     "next": "14.0.4",
     "next-auth": "^4.24.5",
     "next-themes": "^0.2.1",
+    "novel": "^0.1.22",
+    "openai": "^4.22.1",
     "openai-edge": "^1.2.2",
     "react": "^18",
     "react-dom": "^18",

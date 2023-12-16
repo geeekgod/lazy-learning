@@ -5,6 +5,7 @@ export const env = createEnv({
   server: {
     // This is optional because it's only used in development.
     // See https://next-auth.js.org/deployment.
+    OPENAI_API_KEY: z.string().min(1),
     NEXTAUTH_URL: z.string().url().optional(),
     NEXTAUTH_SECRET: z.string().min(1),
     GITHUB_ID: z.string().min(1),
@@ -26,6 +27,7 @@ export const env = createEnv({
     NEXT_PUBLIC_APP_ENV: z.string().min(1),
   },
   runtimeEnv: {
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     GITHUB_ID: process.env.GITHUB_ID,
