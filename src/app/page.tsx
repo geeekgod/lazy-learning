@@ -5,6 +5,7 @@
 
 'use client';
 
+import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button"
 import { BrainIcon, GroupIcon, ReplyIcon } from "lucide-react";
 import Link from "next/link"
@@ -14,23 +15,6 @@ export default function Component() {
   const router = useRouter();
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center">
-        <Link className="flex items-center justify-center" href="/">
-          <BrainIcon className="h-6 w-6" />
-          <span className="sr-only">Lazy Learning</span>
-        </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
-            Features
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
-            About
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
-            Contact
-          </Link>
-        </nav>
-      </header>
       <main className="flex-1">
         <section className="w-full pt-12 md:pt-24 lg:pt-32 border-y pb-8">
           <div className="px-4 md:px-6 space-y-10 xl:space-y-16">
@@ -43,9 +27,9 @@ export default function Component() {
                   A revolutionary AI-powered platform to help you solve doubts instantly, make learning easy, and
                   achieve academic success.
                 </p>
-                <Button className="mt-4" onClick={() => {
-                  router.push('/app/chat');
-                }}>Ask a Question</Button>
+                <Link href="/app/chat">
+                  <Button className="mt-4">Ask a Question</Button>
+                </Link>
               </div>
               <img
                 alt="Lazy Learning"
@@ -89,17 +73,7 @@ export default function Component() {
           </div>
         </section>
       </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-gray-500 dark:text-gray-400">© Lazy Learning. All rights reserved.</p>
-        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-xs hover:underline underline-offset-4" href="#">
-            Terms of Service
-          </Link>
-          <Link className="text-xs hover:underline underline-offset-4" href="#">
-            Privacy
-          </Link>
-        </nav>
-      </footer>
+      <Footer />
     </div>
   )
 }

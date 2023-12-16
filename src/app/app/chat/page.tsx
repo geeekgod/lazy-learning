@@ -9,7 +9,7 @@ import { CardHeader, CardContent, Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-import { BrainIcon, Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { useEffect, useState, useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { RenderMessage } from "@/components/ai-markdown";
@@ -114,22 +114,17 @@ export default function Page() {
   }, [messages]);
 
   return (
-    <div className="w-full h-screen flex flex-col items-center bg-gray-100">
+    <div
+      style={{
+        height: "calc(100vh - 57px)"
+      }}
+      className="w-full flex flex-col items-center bg-gray-100">
       <Toaster
         position="bottom-left"
         reverseOrder={false}
       />
-      <header className="w-full py-4 px-6 bg-white shadow-md flex items-center justify-between">
-        {/* <h1 className="font-bold text-2xl">Lazy Learning</h1> */}
-        <Link className="flex items-center justify-center" href="/">
-          <BrainIcon className="h-6 w-6" />
-          <span className="sr-only">Lazy Learning</span>
-        </Link>
-        <Button variant="outline">Logout</Button>
-      </header>
-      <div className="flex flex-grow overflow-auto p-6" ref={mainSectionRef}>
+      <div className="flex flex-grow w-full overflow-auto p-6" ref={mainSectionRef}>
         <main className="flex flex-col gap-6 w-full m-auto">
-
           {
             messages && messages.map((message, index) => {
 
