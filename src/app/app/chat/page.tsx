@@ -34,7 +34,7 @@ export default function Component() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
-                Hi, I'm wondering if you can help me understand the concept of Machine Learning?
+                Hi, I&apos;m wondering if you can help me understand the concept of Machine Learning?
               </p>
             </CardContent>
           </Card>
