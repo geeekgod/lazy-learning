@@ -61,7 +61,7 @@ export default function Component() {
       <div className="w-full p-6 bg-white shadow-md">
         <div className="flex gap-4">
           <Input className="flex-grow" placeholder="Type your message here..." />
-          <Button variant="filled">Send</Button>
+          <Button variant="outline">Send</Button>
         </div>
       </div>
     </div>
