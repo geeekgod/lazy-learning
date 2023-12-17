@@ -9,7 +9,6 @@ import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { User } from "next-auth"
-import Link from "next/link"
 import { useEffect, useState } from "react"
 
 type Post = {
@@ -24,7 +23,7 @@ type Post = {
   };
 };
 
-export default function HomePage({
+export default function CommunityHomePage({
   user
 }: {
   user: Pick<User, "email" | "name" | "image">
@@ -62,32 +61,10 @@ export default function HomePage({
             <p className="text-gray-500">{user.email}</p>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <Link className="text-blue-500" href="/app/chat">
-            <Card>
-              <CardHeader>
-                <CardTitle>Lazy AI Chat</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Engage in AI-powered discussions to solve your doubts & queries instantly!</p>
-              </CardContent>
-            </Card>
-          </Link>
-          <Link className="text-blue-500" href="/app/notes">
-            <Card>
-              <CardHeader>
-                <CardTitle>Lazy Notes</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Take notes quickly and easily, and if wanna write quickly use our Lazy AI.</p>
-              </CardContent>
-            </Card>
-          </Link>
-        </div>
       </section>
       <section className="space-y-6">
         <div className="flex flex-1 flex-col gap-4 p-y-4 md:gap-8 md:p-6">
-          <h2 className="text-2xl font-bold">Community</h2>
+          <h2 className="text-2xl font-bold">Community Posts</h2>
           {loading ? (
             <div className="w-full h-36 flex items-center justify-center">
               <Loader2 className={cn("animate-spin w-12 h-12", { hidden: !loading })} />
