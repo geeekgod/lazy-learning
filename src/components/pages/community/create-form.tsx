@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useForm } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -31,7 +31,7 @@ export function CommunityCreateForm({ className, user, ...props }: {
   const router = useRouter()
   const { toast } = useToast();
 
-  async function onSubmit(data: FormData) {
+  const onSubmit: SubmitHandler<PostSchema> = async (data) => {
     const dataToSubmit = {
       ...data,
       email: user.email,
