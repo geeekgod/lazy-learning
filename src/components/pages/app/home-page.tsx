@@ -4,6 +4,7 @@
  */
 'use client';
 
+import { PostItem } from "@/components/post-item";
 import { AvatarImage, Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button";
 import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card"
@@ -99,25 +100,7 @@ export default function HomePage({
             <div className="grid md:grid-cols-2 grid-cols-1 gap-y-4 gap-x-0 md:gap-x-3">
               {
                 posts && posts.map((post, index) => (
-                  <Card key={index}>
-                    <CardHeader>
-                      <CardTitle className="mb-0 flex items-center space-x-2">
-                        <Avatar>
-                          <AvatarImage src={post.image} />
-                          <AvatarFallback>U</AvatarFallback>
-                        </Avatar>
-                        <p className="text-lg">{post.title}</p>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p>
-                        <span className="font-bold">Question:</span> {post.content}
-                      </p>
-                      <p>
-                        <span className="font-bold mt-3">Asked By:</span> {post.name}
-                      </p>
-                    </CardContent>
-                  </Card>
+                  <PostItem post={post} key={index} />
                 ))
               }
             </div>
