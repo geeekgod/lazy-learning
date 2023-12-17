@@ -3,33 +3,7 @@ import { getUserByEmail } from '@/lib/db';
 import { supabase } from '@/lib/supabase';
 import { getServerSession } from 'next-auth';
 
-export async function GET(req: Request) {
-
-  const session = await getServerSession(authOptions);
-
-  let sessionUser = null;
-  if (session) {
-    sessionUser = session.user;
-  } else {
-    return new Response(JSON.stringify({ error: "not signed in" }), {
-      status: 401,
-      headers: {
-        "content-type": "application/json; charset=UTF-8",
-      },
-    });
-  }
-  const { data: posts, error } = await supabase.from("posts").select("*").eq('email', sessionUser.email);
-
-  return new Response(JSON.stringify(posts), {
-    headers: {
-      "content-type": "application/json; charset=UTF-8",
-    },
-  });
-
-}
-
-
-// POST /api/community
+// POST /api/community/comments
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
   let sessionUser = null;
@@ -48,7 +22,7 @@ export async function POST(req: Request) {
   const body = await req.json();
 
   // validate body to have title and content and email
-  if (!body.title || !body.content || !body.email) {
+  if (!body.comment || !body.email || !body.postId) {
     return new Response(JSON.stringify({ error: "missing fields" }), {
       status: 400,
       headers: {
@@ -68,18 +42,17 @@ export async function POST(req: Request) {
 
   const user = await getUserByEmail(sessionUser.email);
 
-
-  // create a new post
-  const post = {
-    title: body.title,
-    content: body.content,
+  // create a new comment for the post
+  const comment = {
+    comment: body.comment,
+    postId: body.postId,
+    userId: user.id,
     email: sessionUser.email,
     image: sessionUser.image,
     name: sessionUser.name,
-    userId: user.id,
   };
 
-  const { data, error } = await supabase.from("posts").insert(post);
+  const { data, error } = await supabase.from("comments").insert(comment);
 
   if (error) {
     return new Response(JSON.stringify({ error }), {
@@ -91,7 +64,7 @@ export async function POST(req: Request) {
   }
 
   return new Response(JSON.stringify({
-    message: "post created",
+    message: "comment created",
   }), {
     status: 200,
     headers: {

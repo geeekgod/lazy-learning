@@ -22,6 +22,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SUPABASE_URL: z.string().min(1),
     SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
     NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
+    GOOGLE_API_KEY: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().min(1),
@@ -46,5 +47,6 @@ export const env = createEnv({
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
   },
 })
