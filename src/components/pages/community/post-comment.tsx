@@ -48,7 +48,15 @@ export function PostComment({ className, user, postId, ...props }: {
       body: JSON.stringify(dataToSubmit),
     });
 
-    setIsLoading(false)
+    setIsLoading(false);
+
+    if (createPostResult.status == 400 && createPostResult.statusText === "toxic content") {
+      return toast({
+        title: "Toxic content detected, please try again.",
+        description: "Please make sure your post is not toxic. We do not allow toxic content in our community.",
+        variant: "destructive",
+      });
+    }
 
     if (createPostResult.status == 400) {
       return toast({

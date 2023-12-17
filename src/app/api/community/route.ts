@@ -2,6 +2,8 @@ import { authOptions } from '@/lib/auth';
 import { getUserByEmail } from '@/lib/db';
 import { supabase } from '@/lib/supabase';
 import { getServerSession } from 'next-auth';
+import axios from 'axios';
+import { env } from '@/env.mjs';
 
 export async function GET(req: Request) {
 
@@ -67,6 +69,30 @@ export async function POST(req: Request) {
   }
 
   const user = await getUserByEmail(sessionUser.email);
+
+  // send axios post request to perspective api to get toxicity score
+  const { data: { attributeScores: { TOXICITY: { summaryScore: { value } } } } } = await axios.post(
+    "https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=" + env.GOOGLE_API_KEY,
+    {
+      comment: {
+        text: body.title + " " + body.content,
+      },
+      languages: ["en"],
+      requestedAttributes: {
+        TOXICITY: {},
+      },
+    },
+  );
+
+  if (value > 0.7) {
+    return new Response(JSON.stringify({ error: "toxic content" }), {
+      status: 400,
+      statusText: "toxic content",
+      headers: {
+        "content-type": "application/json; charset=UTF-8",
+      },
+    });
+  }
 
 
   // create a new post

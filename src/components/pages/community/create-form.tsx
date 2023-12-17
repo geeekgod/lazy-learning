@@ -48,6 +48,14 @@ export function CommunityCreateForm({ className, user, ...props }: {
 
     setIsLoading(false)
 
+    if (createPostResult.status == 400 && createPostResult.statusText === "toxic content") {
+      return toast({
+        title: "Something went wrong.",
+        description: "Please make sure your post is not toxic. We do not allow toxic content in our community.",
+        variant: "destructive",
+      });
+    }
+
     if (createPostResult.status == 400) {
       return toast({
         title: "Something went wrong.",
