@@ -5,6 +5,7 @@
 'use client';
 
 import { AvatarImage, Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button";
 import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
@@ -87,7 +88,12 @@ export default function HomePage({
       </section>
       <section className="space-y-6">
         <div className="flex flex-1 flex-col gap-4 p-y-4 md:gap-8 md:p-6">
-          <h2 className="text-2xl font-bold">Community</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold">Community</h2>
+            <Link href="/app/community/create">
+              <Button >Post Doubt</Button>
+            </Link>
+          </div>
           {loading ? (
             <div className="w-full h-36 flex items-center justify-center">
               <Loader2 className={cn("animate-spin w-12 h-12", { hidden: !loading })} />
