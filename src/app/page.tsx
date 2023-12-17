@@ -38,9 +38,9 @@ export default function Component() {
               </div>
               <img
                 alt="Lazy Learning"
-                className="mx-auto aspect-[3/1] overflow-hidden rounded-t-xl object-cover"
+                className="mx-auto aspect-[3/2] overflow-hidden rounded-t-xl object-cover"
                 height="300"
-                src="/assets/img/lazy-learning-hero.png"
+                src="/assets/img/lazy-learning-demo.png"
                 width="500"
               />
             </div>
