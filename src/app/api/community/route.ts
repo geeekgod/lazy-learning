@@ -1,42 +1,24 @@
 import { authOptions } from '@/lib/auth';
 import { supabase } from '@/lib/supabase';
-import { faker } from '@faker-js/faker';
 import { getServerSession } from 'next-auth';
 
-type Post = {
-  id: string;
-  title: string;
-  content: string;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    image: string;
-  };
-};
-
-function createRandomPost(): Post {
-  return {
-    id: faker.string.uuid(),
-    title: faker.lorem.sentence(),
-    content: faker.lorem.paragraph(),
-    user: {
-      id: faker.string.uuid(),
-      name: faker.person.fullName(),
-      email: faker.internet.email(),
-      image: faker.image.avatar(),
-    },
-  };
-}
-
-// random count between 20 - 40
-const count = faker.number.int(20) + 30;
-
-const posts: Post[] = faker.helpers.multiple(createRandomPost, {
-  count: 25,
-});
-
 export async function GET(req: Request) {
+
+  const session = await getServerSession(authOptions);
+
+  let sessionUser = null;
+  if (session) {
+    sessionUser = session.user;
+  } else {
+    return new Response(JSON.stringify({ error: "not signed in" }), {
+      status: 401,
+      headers: {
+        "content-type": "application/json; charset=UTF-8",
+      },
+    });
+  }
+  const { data: posts, error } = await supabase.from("posts").select("*").eq('email', sessionUser.email);
+
   return new Response(JSON.stringify(posts), {
     headers: {
       "content-type": "application/json; charset=UTF-8",
@@ -47,7 +29,7 @@ export async function GET(req: Request) {
 
 
 // POST /api/community
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
   let sessionUser = null;
   if (session) {

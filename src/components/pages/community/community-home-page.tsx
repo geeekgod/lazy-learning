@@ -17,12 +17,9 @@ type Post = {
   id: string;
   title: string;
   content: string;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    image: string;
-  };
+  name: string;
+  email: string;
+  image: string;
 };
 
 export default function CommunityHomePage({
@@ -84,7 +81,7 @@ export default function CommunityHomePage({
                     <CardHeader>
                       <CardTitle className="mb-0 flex items-center space-x-2">
                         <Avatar>
-                          <AvatarImage src={post.user.image} />
+                          <AvatarImage src={post.image} />
                           <AvatarFallback>U</AvatarFallback>
                         </Avatar>
                         <p className="text-lg">{post.title}</p>
@@ -95,7 +92,7 @@ export default function CommunityHomePage({
                         <span className="font-bold">Question:</span> {post.content}
                       </p>
                       <p>
-                        <span className="font-bold mt-3">Asked By:</span> {post.user.name}
+                        <span className="font-bold mt-3">Asked By:</span> {post.name}
                       </p>
                     </CardContent>
                   </Card>

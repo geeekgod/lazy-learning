@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@auth/supabase-adapter": "^0.1.12",
-    "@faker-js/faker": "^8.3.1",
     "@hookform/resolvers": "^3.3.2",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
