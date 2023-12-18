@@ -1,4 +1,4 @@
-## This project is for Quine Quest 004, please upvote the project here. 🔥
+## This project is for Quine Quest 004, please upvote the project [here](https://quine.sh/repo/thisisrishabh22-lazy-learning-732296702?utm_source=copy&utm_share_context=quests_repos). 🔥
 
 # Lazy Learning
 
