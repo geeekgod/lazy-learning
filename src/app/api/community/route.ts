@@ -1,5 +1,5 @@
 import { authOptions } from '@/lib/auth';
-import { getUserByEmail } from '@/lib/db';
+import { getPosts, getUserByEmail } from '@/lib/db';
 import { supabase } from '@/lib/supabase';
 import { getServerSession } from 'next-auth';
 import axios from 'axios';
@@ -20,7 +20,7 @@ export async function GET(req: Request) {
       },
     });
   }
-  const { data: posts, error } = await supabase.from("posts").select("*").eq('email', sessionUser.email);
+  const posts = await getPosts();
 
   return new Response(JSON.stringify(posts), {
     headers: {
