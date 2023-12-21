@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  lazy-learning:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lazy-learning:latest  # Remember to change this to your Docker image name
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: your_postgres_user
+      POSTGRES_PASSWORD: your_postgres_password
+      POSTGRES_DB: your_database_name

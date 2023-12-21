@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lazy-learning
+  namespace: default
+spec:
+  selector:
+    app: lazy-learning
+  type: ClusterIP
+  ports:
+  - name: lazy-learning
+    protocol: TCP
+    port: 80  # Specify the port where the service will be exposed within the cluster
+    targetPort: 3000
+
+  # nodePort: 30000  # Uncomment and specify a nodePort value if using NodePort type
