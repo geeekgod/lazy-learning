@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lazy-learning
+  namespace: default
+  labels:
+    app: lazy-learning
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: lazy-learning
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: lazy-learning
+    spec:
+      containers:
+      - name: lazy-learning
+        image: lazy-learning:latest #change it to your docker image name 
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
