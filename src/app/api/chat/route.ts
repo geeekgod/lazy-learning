@@ -1,16 +1,10 @@
-import { Configuration, OpenAIApi } from "openai-edge";
-import { OpenAIStream, StreamingTextResponse } from "ai";
-
-const config = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(config);
+import { groq } from "@ai-sdk/groq";
+import { streamText } from "ai";
 
 export const runtime = "edge";
 
 export async function POST(req: Request) {
   const { content } = await req.json();
-
 
   if (content == "") {
     return new Response("Please write something", { status: 400 });
@@ -31,26 +25,17 @@ export async function POST(req: Request) {
         So you have to explain the concept in a very simple way along with maintaining the quality of the content and eliminating the need for the student to search for the concept on the internet.
         And remember not to respond with too many content, keep is short and crisp`;
 
-  const response = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    stream: true,
-    temperature: 0.7,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 1000,
-    messages: [
-      {
-        role: "system",
-        content: prompt,
-      },
-      {
-        role: "user",
-        content: content,
-      },
-    ],
+  const model = groq("llama-3.2-1b-preview");
+
+  const { textStream } = await streamText({
+    model,
+    system: prompt,
+    prompt: content,
+    temperature: 0.5,
+    topP: 1,
+    frequencyPenalty: 0,
+    presencePenalty: 0,
   });
 
-  const stream = OpenAIStream(response);
-  return new StreamingTextResponse(stream);
+  return new Response(textStream, { status: 200 });
 }
