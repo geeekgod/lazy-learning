@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   description: "Your Personal Learning Assistant",
   icons: "/logo.png",
   openGraph: {
+    siteName: "Lazy Learning",
     title: "Lazy Learning",
     description: "Your Personal Learning Assistant",
     images: [
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
     ],
     type: "website",
     countryName: "India",
+    url: "https://lazy-learning.geeekgod.in",
   },
 };
 
