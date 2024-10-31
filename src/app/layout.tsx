@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://lazy-learning.geeekgod.in"),
   title: "Lazy Learning",
   description: "Your Personal Learning Assistant",
   icons: "/logo.png",
