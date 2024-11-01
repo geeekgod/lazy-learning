@@ -20,10 +20,12 @@ type Message = {
 
 export default function ChatPage({
   user,
+  chats,
 }: {
   user: Pick<User, "email" | "name" | "image">;
+  chats: Message[];
 }) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(chats);
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const mainSectionRef = useRef<HTMLDivElement>(null);
@@ -31,7 +33,6 @@ export default function ChatPage({
   // Scroll To Bottom
   const scrollToBottom = useCallback(() => {
     if (!mainSectionRef.current) return;
-    console.log(loading ? "smooth" : "instant");
     const target = mainSectionRef.current;
     target.scroll({
       top: target.scrollHeight,
@@ -69,7 +70,6 @@ export default function ChatPage({
 
       // stream response
       const reader = response.body?.getReader();
-      toast.success("Message submitted!");
 
       if (!reader) return;
 
@@ -87,7 +87,11 @@ export default function ChatPage({
         const { done: _done, value: _value } = await reader.read();
         done = _done;
         value += new TextDecoder().decode(_value);
-        console.log("value", value);
+        if (value === "Rate Limited!") {
+          setMessages(messages.slice(0, -1));
+          toast.error("Rate limited! Please try again later.");
+          break;
+        }
         setTimeout(() => {
           // find last message and check timestamp as well
           const lastMessage = newMessages[newMessages.length - 1];
@@ -104,7 +108,10 @@ export default function ChatPage({
       botMessage.message = value;
       setMessages(newMessages);
     } catch (error) {
-      toast.error("Something went wrong!");
+      // check if status is 429
+      if (error instanceof Response && error.status === 429)
+        toast.error("Rate limited! Please try again later.");
+      else toast.error("Something went wrong!");
       console.error(error);
       setMessages(messages.slice(0, -1));
     } finally {
@@ -230,6 +237,14 @@ export default function ChatPage({
               placeholder="Type your doubt here..."
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                  e.preventDefault();
+                  handleSubmit(
+                    e as unknown as React.FormEvent<HTMLFormElement>
+                  );
+                }
+              }}
             />
             <Button disabled={loading} variant="outline" type="submit">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

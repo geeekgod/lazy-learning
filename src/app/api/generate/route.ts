@@ -7,7 +7,7 @@ export async function POST(req: Request): Promise<Response> {
   const systemPrompt =
     "You are an AI writing assistant that continues existing text based on context from prior text. " +
     "Give more weight/priority to the later characters than the beginning ones. " +
-    "Limit your response to no more than 100 characters, but make sure to construct complete sentences.";
+    "Limit your response to no more than 400 tokens, but make sure to construct complete sentences.";
 
   const model = groq("llama-3.2-1b-preview");
 
@@ -16,8 +16,7 @@ export async function POST(req: Request): Promise<Response> {
     system: systemPrompt,
     prompt,
     temperature: 0.5,
-    frequencyPenalty: 0,
-    presencePenalty: 0,
+    maxTokens: 400,
   });
 
   return new Response(textStream, { status: 200 });

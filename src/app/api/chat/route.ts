@@ -1,9 +1,30 @@
+import { kv } from "@vercel/kv";
+import { Ratelimit } from "@upstash/ratelimit";
 import { createChat, getChatsByUser } from "@/lib/db";
 import { getApiUser } from "@/lib/session";
 import { groq } from "@ai-sdk/groq";
 import { CoreMessage, streamText } from "ai";
 
+// Allow streaming responses up to 30 seconds
+export const maxDuration = 30;
+
+// Create Rate limit
+const ratelimit = new Ratelimit({
+  redis: kv,
+  limiter: Ratelimit.fixedWindow(5, "30s"),
+});
+
 export async function POST(req: Request) {
+  // call rate limit with request ip
+  const ip = req.headers.get("x-real-ip") ?? "ip";
+  // const ip = req.ip ?? "ip";
+  const { success } = await ratelimit.limit(ip);
+
+  // block the request if unsuccessfull
+  if (!success) {
+    return new Response("Rate Limited!", { status: 429 });
+  }
+
   const user = await getApiUser();
 
   if (!user || user instanceof Response) {
@@ -18,19 +39,16 @@ export async function POST(req: Request) {
   }
 
   // Save the chat message to the database
-  const newMessage = await createChat({
+  await createChat({
     userId: user.id,
     message: content,
     user: "user",
     timestamp: new Date().toISOString(),
   });
 
-  console.log("newMessage", newMessage);
-
   // Get the messages for the user
   let chats = await getChatsByUser(user.id);
   if (!chats) chats = [];
-  console.log(chats);
 
   const messages: Array<CoreMessage> = chats.map((chat) => {
     return {
@@ -53,6 +71,7 @@ export async function POST(req: Request) {
         Students might be asking questions to understand the concepts for exam preparation, interview preparation, project preparation, assignment preparation, homework preparation, etc.
         So you have to explain the concept in a very simple way along with maintaining the quality of the content and eliminating the need for the student to search for the concept on the internet.
         And remember not to respond with too many content, keep is short and crisp
+        Name of the student is ${user.name}
 
         Important points to remember while responding to the student:
         1. If the questions is very short, then ask the student to elaborate the question
@@ -61,19 +80,27 @@ export async function POST(req: Request) {
         4. If the question is not clear, then ask the student to provide more details
         5. If the question is out of scope, then ask the student to ask the question related to the topic
         6. Don't repeat the same content again and again from previous messages
+        7. While addressing the student, use the student's first name
         `;
 
   const model = groq("llama-3.2-1b-preview");
 
-  const { textStream } = await streamText({
-    model,
-    system: prompt,
-    // prompt: content,
-    messages,
-    temperature: 0.5,
-    // frequencyPenalty: 0,
-    // presencePenalty: 0,
-  });
+  let textStream;
+  try {
+    const result = await streamText({
+      model,
+      system: prompt,
+      messages,
+      temperature: 0.5,
+    });
+    textStream = result.textStream;
+  } catch (error: any) {
+    if (error && error.message.toLowerCase().includes("rate limit")) {
+      return new Response("Rate Limited!", { status: 429 });
+    } else {
+      return new Response("Error", { status: 500 });
+    }
+  }
 
   return new Response(
     new ReadableStream({
@@ -87,7 +114,7 @@ export async function POST(req: Request) {
         // when stream is done, close the controller & also store the messages in database
         // store the response in the database
 
-        const botMessage = await createChat({
+        await createChat({
           userId: user.id,
           message: text,
           user: "assistant",

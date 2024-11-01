@@ -1434,6 +1434,13 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
+"@upstash/core-analytics@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@upstash/core-analytics/-/core-analytics-0.0.10.tgz#e686a313ec2279d5a8d53e6c215085f1c0f5ab4b"
+  integrity sha512-7qJHGxpQgQr9/vmeS1PktEwvNAF7TI4iJDi8Pu2CFZ9YUGHZH4fOP5TfYlZ4aVxfopnELiE4BS4FBjyK7V1/xQ==
+  dependencies:
+    "@upstash/redis" "^1.28.3"
+
 "@upstash/core-analytics@^0.0.6":
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/@upstash/core-analytics/-/core-analytics-0.0.6.tgz#8680e7697e0f2660c2507bbc56348f5541bb0237"
@@ -1448,6 +1455,13 @@
   dependencies:
     "@upstash/core-analytics" "^0.0.6"
 
+"@upstash/ratelimit@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@upstash/ratelimit/-/ratelimit-2.0.4.tgz#c2c8d80b23c9f297fc802f44f8c12397f9550bf4"
+  integrity sha512-rKZWlZXXK93Xv1cz5/eCbGN4ZbvN3dWbjT2V6Of/3vqQGzd3TnD/xS3Okxp8EoG7L4MeLpy6UsRuMKGnuDZFAQ==
+  dependencies:
+    "@upstash/core-analytics" "^0.0.10"
+
 "@upstash/redis@1.24.3":
   version "1.24.3"
   resolved "https://registry.yarnpkg.com/@upstash/redis/-/redis-1.24.3.tgz#0247250f7e26b6923e6ce4f348ce08f7bbdc6222"
@@ -1459,6 +1473,13 @@
   version "1.25.2"
   resolved "https://registry.yarnpkg.com/@upstash/redis/-/redis-1.25.2.tgz#c400caced6e05a4931823c4eb57eda6b73963db3"
   integrity sha512-iI3jgvmDIbe4Px0PskB8lrn1NXz7ZQyGpW9Ehmonk6SEFqhqssqIB04VmlNh8zZUXwzy6G9DaIa5gIUM6B7DwA==
+  dependencies:
+    crypto-js "^4.2.0"
+
+"@upstash/redis@^1.28.3", "@upstash/redis@^1.34.0":
+  version "1.34.3"
+  resolved "https://registry.yarnpkg.com/@upstash/redis/-/redis-1.34.3.tgz#df0338f4983bba5141878e851be4fced494b44a0"
+  integrity sha512-VT25TyODGy/8ljl7GADnJoMmtmJ1F8d84UXfGonRRF8fWYJz7+2J6GzW+a6ETGtk4OyuRTt7FRSvFG5GvrfSdQ==
   dependencies:
     crypto-js "^4.2.0"
 
@@ -1483,6 +1504,13 @@
   integrity sha512-wbIOOXhg6MzmNMzKFSWbbLAS65hCZcJN33z1coENzI1M0fOX55yE9v9LwVGqkzdItp3eZsv6pYvwcmGtllyLTw==
   dependencies:
     "@upstash/redis" "1.24.3"
+
+"@vercel/kv@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@vercel/kv/-/kv-3.0.0.tgz#4579153536c9fc0ca8c52d3d7cfe944ccffd08c0"
+  integrity sha512-pKT8fRnfyYk2MgvyB6fn6ipJPCdfZwiKDdw7vB+HL50rjboEBHDVBEcnwfkEpVSp2AjNtoaOUH7zG+bVC/rvSg==
+  dependencies:
+    "@upstash/redis" "^1.34.0"
 
 abab@^2.0.6:
   version "2.0.6"
