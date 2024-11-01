@@ -11,8 +11,10 @@ import { User } from "next-auth";
 import { Textarea } from "@/components/ui/textarea";
 
 type Message = {
+  id?: string;
+  userId?: string;
   user: "user" | "bot";
-  text: string;
+  message: string;
   timestamp: number;
 };
 
@@ -49,7 +51,7 @@ export default function ChatPage({
 
     const message: Message = {
       user: "user",
-      text: prompt,
+      message: prompt,
       timestamp: Date.now(),
     };
     let newMessages = [...messages, message];
@@ -76,7 +78,7 @@ export default function ChatPage({
       let value = "";
       let botMessage: Message = {
         user: "bot",
-        text: "",
+        message: "",
         timestamp: Date.now(),
       };
       newMessages = [...newMessages, botMessage];
@@ -93,44 +95,50 @@ export default function ChatPage({
             lastMessage.user === "bot" &&
             lastMessage.timestamp === botMessage.timestamp
           ) {
-            botMessage.text = value;
+            botMessage.message = value;
             setMessages(newMessages);
           }
         }, 50);
       }
 
-      botMessage.text = value;
+      botMessage.message = value;
       setMessages(newMessages);
-
-      setPrompt("");
-      setLoading(false);
     } catch (error) {
       toast.error("Something went wrong!");
       console.error(error);
-      setPrompt("");
       setMessages(messages.slice(0, -1));
+    } finally {
+      setPrompt("");
       setLoading(false);
     }
   };
 
   // Chat Fetch from Local Storage
   useEffect(() => {
-    const messages = localStorage.getItem("messages");
-    if (messages) {
-      setMessages(JSON.parse(messages));
-    }
+    // const messages = localStorage.getItem("messages");
+    // if (messages) {
+    //   setMessages(JSON.parse(messages));
+    // }
+    const fetchMessages = async () => {
+      const response = await fetch("/api/chats");
+      if (response.ok) {
+        const data = await response.json();
+        setMessages(data);
+      }
+    };
+    fetchMessages();
   }, []);
 
-  // Chat Save to Local Storage
-  useEffect(() => {
-    if (messages.length === 0) return;
+  // // Chat Save to Local Storage
+  // useEffect(() => {
+  //   if (messages.length === 0) return;
 
-    const debouncedSave = setTimeout(() => {
-      localStorage.setItem("messages", JSON.stringify(messages));
-    }, 1000);
+  //   const debouncedSave = setTimeout(() => {
+  //     localStorage.setItem("messages", JSON.stringify(messages));
+  //   }, 1000);
 
-    return () => clearTimeout(debouncedSave);
-  }, [messages]);
+  //   return () => clearTimeout(debouncedSave);
+  // }, [messages]);
 
   // Auto scroll to bottom of main section when messages change
   useEffect(() => {
@@ -183,7 +191,7 @@ export default function ChatPage({
                     </CardHeader>
                     <CardContent>
                       <p className="text-gray-600 dark:text-gray-200">
-                        {message.text}
+                        {message.message}
                       </p>
                     </CardContent>
                   </Card>
@@ -204,7 +212,7 @@ export default function ChatPage({
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <RenderMessage>{message.text}</RenderMessage>
+                      <RenderMessage>{message.message}</RenderMessage>
                     </CardContent>
                   </Card>
                 );

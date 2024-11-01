@@ -1,8 +1,6 @@
 import { groq } from "@ai-sdk/groq";
 import { streamText } from "ai";
 
-// export const runtime = "edge";
-
 export async function POST(req: Request): Promise<Response> {
   let { prompt } = await req.json();
 
@@ -18,7 +16,6 @@ export async function POST(req: Request): Promise<Response> {
     system: systemPrompt,
     prompt,
     temperature: 0.5,
-    topP: 1,
     frequencyPenalty: 0,
     presencePenalty: 0,
   });
