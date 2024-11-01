@@ -85,7 +85,7 @@ export async function POST(req: Request) {
 
   const model = groq("llama-3.2-1b-preview");
 
-  let textStream;
+  let textStream: AsyncIterable<string>;
   try {
     const result = await streamText({
       model,
